@@ -1,0 +1,23 @@
+trainer:
+    profiler: False
+    gpus: 1
+    fast_dev_run: False
+    min_epochs: 1
+    max_epochs: 1
+
+logger:
+    experiment_name: "mlflow-pipeline-MNIST"
+    tracking_uri: "file:./ml-runs"
+
+optimizer:
+    lr: 0.001
+    weight_decay: 0.00001
+    
+on_scheduler: True
+scheduler:
+    T_max: 5
+    eta_min: 0.0001
+
+num_class: 10
+
+seed: 42
