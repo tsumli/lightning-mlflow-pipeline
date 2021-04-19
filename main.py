@@ -57,4 +57,3 @@ def fit(cfg) -> None:
 if __name__ == '__main__':
     cfg = get_config()
     fit(cfg)
-    subprocess.run("python mani.py", shell=True)
