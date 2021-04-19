@@ -22,7 +22,6 @@ def get_config(file: str = 'config.yaml'):
     cfg_cli = OmegaConf.from_cli()
     parent_dir = os.path.abspath('.')
     cfg = OmegaConf.merge(cfg, cfg_cli)
-    print(f"set seed: {cfg.seed}")
     seed_everything(cfg.seed)
     return cfg
 
