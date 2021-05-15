@@ -1,34 +1,38 @@
-from abc import abstractmethod
-
+import torch
+from PIL import Image
 from torchvision import transforms
 
 
-class TrainTransform(object):
-    def __init__(self):
-        self.transform = transforms.Compose([
-            transforms.RandomResizedCrop(224, (1., 1.), (1., 1.)),
-            transforms.RandomResizedCrop(224),
-            transforms.ColorJitter(.5, .5, .5),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-        ])
+class TrainTransform:
+    def __init__(self) -> None:
+        self.transform = transforms.Compose(
+            [
+                transforms.RandomResizedCrop(224, (1.0, 1.0), (1.0, 1.0)),
+                transforms.RandomResizedCrop(224),
+                transforms.ColorJitter(0.5, 0.5, 0.5),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            ]
+        )
 
-    def __call__(self, img):
-        img = img.convert('RGB') 
-        a = self.transform(img)
-        return a
-    
-class TestTransform(object):
-    def __init__(self):
-        self.transform = transforms.Compose([
-            transforms.RandomResizedCrop(224, (1., 1.), (1., 1.)),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-        ])
+    def __call__(self, img: Image) -> torch.Tensor:
+        img = img.convert("RGB")
+        transformed_img: torch.Tensor = self.transform(img)
+        return transformed_img
 
-    def __call__(self, img):
-        img = img.convert('RGB') 
-        a = self.transform(img)
-        return a
 
+class TestTransform:
+    def __init__(self) -> None:
+        self.transform = transforms.Compose(
+            [
+                transforms.RandomResizedCrop(224, (1.0, 1.0), (1.0, 1.0)),
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            ]
+        )
+
+    def __call__(self, img: Image) -> torch.Tensor:
+        img = img.convert("RGB")
+        transformed_img: torch.Tensor = self.transform(img)
+        return transformed_img

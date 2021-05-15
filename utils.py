@@ -1,6 +1,3 @@
-from typing import Any
-
-
 class AverageMeter(object):
     """Computes and stores the average and current value.
 
@@ -23,10 +20,7 @@ class AverageMeter(object):
         self.sum = 0
         self.count = 0
 
-    def update(self, 
-               val: Any, 
-               n: int = 1
-               ) -> None:
+    def update(self, val, n=1) -> None:
         self.val = val
         self.sum += val * n
         self.count += n
