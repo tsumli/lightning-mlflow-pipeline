@@ -1,24 +1,18 @@
 import os
-import subprocess
-import sys
 
-import mlflow
 import pytorch_lightning as pl
-import torch
 from omegaconf import OmegaConf
 from pytorch_lightning import seed_everything
-from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
+from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import MLFlowLogger
 
-sys.path.append(os.path.abspath("."))
-from dataset import MNIST_datasets
+from dataset.dataset import MNIST_datasets
 from train_model import TrainModel
 
 
 def get_config(file: str = "config.yaml"):
     cfg = OmegaConf.load(file)
     cfg_cli = OmegaConf.from_cli()
-    parent_dir = os.path.abspath(".")
     cfg = OmegaConf.merge(cfg, cfg_cli)
     seed_everything(cfg.seed)
     return cfg
@@ -30,7 +24,6 @@ def fit(cfg) -> None:
         **cfg.logger,
     )
     mlflow_logger.log_hyperparams(cfg)
-    experiment = mlflow_logger.experiment.get_experiment_by_name(mlflow_logger.name)
     local_save_dir = os.path.join(
         mlflow_logger.save_dir,
         mlflow_logger.experiment_id,

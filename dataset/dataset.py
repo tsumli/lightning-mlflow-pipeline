@@ -1,9 +1,5 @@
 import os
-import re
-import sys
 from typing import Tuple
-
-sys.path.append(os.path.abspath("."))
 
 import torch
 from dataset.dataloader import decorator_dataloader

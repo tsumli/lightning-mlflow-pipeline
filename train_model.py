@@ -1,12 +1,7 @@
-import os
-import sys
-
 import pytorch_lightning as pl
 import torch
 from torch.nn import CrossEntropyLoss
-
-sys.path.append(os.path.abspath("."))
-from models import encoder, decoder
+from models.model import encoder, decoder
 
 
 class TrainModel(pl.LightningModule):
