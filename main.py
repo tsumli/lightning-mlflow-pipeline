@@ -18,7 +18,18 @@ def get_config(file: str = "config.yaml"):
     return cfg
 
 
-def fit(cfg) -> None:
+def fit(cfg):
+    """
+    Parameters
+    ----------
+    cfg:
+    config for fitting
+    
+    Returns
+    ----------
+    test_loss: Any
+
+    """
     net = TrainModel(cfg)
     mlflow_logger = MLFlowLogger(
         **cfg.logger,
@@ -39,7 +50,9 @@ def fit(cfg) -> None:
     )
     dl_train, dl_val, dl_test = MNIST_datasets()
     trainer.fit(net, dl_train, dl_val)
-    trainer.test(net, dl_test)
+    test_loss = trainer.test(net, dl_test)[0]['test_loss']
+    print(test_loss)
+    return test_loss
 
 
 if __name__ == "__main__":
