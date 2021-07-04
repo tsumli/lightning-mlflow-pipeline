@@ -1,7 +1,7 @@
 import optuna
-import os
-from pytorch_lightning import seed_everything
 from omegaconf import OmegaConf
+from pytorch_lightning import seed_everything
+
 from main import fit
 
 
