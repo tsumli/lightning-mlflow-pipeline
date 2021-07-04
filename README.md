@@ -20,3 +20,11 @@ cd ..
 docker run -it --rm -v $PWD:/workspace/ --shm-size 2g lightining-mlflow-pipeline:latest /bin/bash
 python main.py
 ```
+
+## Hyper-parameter search
+you can search hyper-parameters using optuna.  
+There should be some modification for parameter search.  
+Default:
+- python code: parameter_search.py
+- configuration file: config_optuna.yaml
+- db file: db/optuna.db
