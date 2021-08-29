@@ -41,19 +41,31 @@ def MNIST_datasets(train_ratio: float = 0.7) -> Tuple[Dataset, ...]:
 
     """
     dataset_train = MNIST(root=os.path.abspath("."), train=True, download=True)
-    # uncomment if you use full MNIST dataset
+
+    # Reduce sample for train
     dataset_train, _ = random_split(
         dataset_train,
         [
-            int(len(dataset_train) * 0.01),
-            len(dataset_train) - int(len(dataset_train) * 0.01),
+            int(len(dataset_train) * 0.001),
+            len(dataset_train) - int(len(dataset_train) * 0.001),
         ],
     )
+    ###############################
+
     len_train = int(len(dataset_train) * train_ratio)
     len_val = len(dataset_train) - len_train
     train, val = random_split(dataset_train, [len_train, len_val])
 
+    # Redule sample for test
     test = MNIST(root=os.path.abspath("."), train=False, download=True)
+    test, _ = random_split(
+        test,
+        [
+            int(len(test) * 0.01),
+            len(test) - int(len(test) * 0.01),
+        ],
+    )
+    ###############################
 
     datasets = (
         MNISTDatasetTransformed(train, True),

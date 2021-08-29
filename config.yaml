@@ -1,17 +1,19 @@
+seed: 42
+
 trainer:
-    profiler: False
-    gpus: 1
-    fast_dev_run: False
-    min_epochs: 1
-    max_epochs: 1
+  profiler: False
+  gpus: 0
+  fast_dev_run: False
+  min_epochs: 1
+  max_epochs: 1
 
 logger:
-    experiment_name: "mlflow-pipeline-MNIST"
-    tracking_uri: "file:./ml-runs"
+  experiment_name: "mlflow-pipeline-MNIST"
+  tracking_uri: "file:./ml-runs"
 
 optimizer:
-    lr: 0.001
-    weight_decay: 0.00001
+  lr: 0.001
+  weight_decay: 0.00001
     
 on_scheduler: True
 scheduler:
@@ -20,4 +22,18 @@ scheduler:
 
 num_class: 10
 
-seed: 42
+
+optuna:
+  enable: True
+  n_trials: 3
+  parameters:
+      lr:
+        type: float
+        args:
+          low: 0.01
+          high: 0.03
+
+  create_study:
+      direction: minimize
+      study_name: optuna
+      storage: sqlite:///db/optuna.db
