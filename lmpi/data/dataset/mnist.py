@@ -2,10 +2,10 @@ import os
 from typing import Tuple
 
 import torch
-from dataset.dataloader import decorator_dataloader
+from ..dataloader import decorator_dataloader
 from torch.utils.data import Dataset, random_split
 from torchvision.datasets import MNIST
-from transforms.train_test_transform import TestTransform, TrainTransform
+from lmpi.transforms.train_test_transform import TestTransform, TrainTransform
 
 
 class MNISTDatasetTransformed(Dataset):

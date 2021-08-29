@@ -3,7 +3,7 @@ import os
 import optuna
 import pytorch_lightning as pl
 from icecream import ic
-from lmpi.dataset.dataset import MNIST_datasets
+from lmpi.data.dataset import MNIST_datasets
 from lmpi.train_model import TrainModel
 from lmpi.utils import get_config
 from omegaconf import DictConfig, OmegaConf
