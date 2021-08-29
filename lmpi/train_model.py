@@ -1,7 +1,8 @@
 import pytorch_lightning as pl
 import torch
 from torch.nn import CrossEntropyLoss
-from .models.model import encoder, decoder
+
+from .models.model import decoder, encoder
 
 
 class TrainModel(pl.LightningModule):
@@ -19,9 +20,10 @@ class TrainModel(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = torch.optim.SGD(self.parameters(), **self.cfg.optimizer)
-        if self.cfg.on_scheduler:
+        if self.cfg.optimizer.scheduler.enable:
+            cfg_scheduler = self.cfg.optimizer.scheduler
             scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-                optimizer, **self.cfg.scheduler
+                optimizer, **cfg_scheduler
             )
             return [optimizer], [scheduler]
         else:

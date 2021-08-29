@@ -3,13 +3,15 @@ import os
 import optuna
 import pytorch_lightning as pl
 from icecream import ic
-from lmpi.data.dataset import MNIST_datasets
+from lmpi.data.dataset.utils import get_datasets
 from lmpi.train_model import TrainModel
+from lmpi.transform.utils import get_transform
 from lmpi.utils import get_config
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning import seed_everything
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import MLFlowLogger
+from torch.utils.data import DataLoader, Subset
 
 print = ic
 
@@ -26,7 +28,7 @@ def fit(cfg: DictConfig):
     test_loss: Any
 
     """
-    net = TrainModel(cfg)
+    model = TrainModel(cfg)
     mlflow_logger = MLFlowLogger(
         **cfg.logger,
     )
@@ -44,9 +46,31 @@ def fit(cfg: DictConfig):
     trainer = pl.Trainer(
         **cfg["trainer"], logger=mlflow_logger, checkpoint_callback=checkpoint_callback
     )
-    dl_train, dl_val, dl_test = MNIST_datasets()
-    trainer.fit(net, dl_train, dl_val)
-    test_loss = trainer.test(net, dl_test)[0]["test_loss"]
+    datasets = get_datasets(
+        name=cfg.dataset.name,
+        root=cfg.dataset.root,
+        test_size=cfg.dataset.test_size,
+        random_state=cfg.dataset.random_state,
+        **get_transform(),
+    )
+
+    train_dataloader = DataLoader(
+        Subset(datasets["train"], range(100)), shuffle=True, num_workers=4
+    )
+    val_dataloader = DataLoader(
+        Subset(datasets["val"], range(100)), shuffle=False, num_workers=4
+    )
+    test_dataloader = DataLoader(
+        Subset(datasets["test"], range(100)), shuffle=False, num_workers=4
+    )
+    trainer.fit(
+        model=model,
+        train_dataloader=train_dataloader,
+        val_dataloaders=val_dataloader,
+    )
+    test_loss = trainer.test(model=model, test_dataloaders=test_dataloader)[0][
+        "test_loss"
+    ]
     return test_loss
 
 

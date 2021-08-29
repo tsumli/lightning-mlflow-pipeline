@@ -1,8 +1,7 @@
-from omegaconf import OmegaConf, DictConfig
+from omegaconf import DictConfig, OmegaConf
 
 
-def get_config(file: str = "config.yaml",
-               merge_cli: bool = True) -> DictConfig:
+def get_config(file: str = "config.yaml", merge_cli: bool = True) -> DictConfig:
     cfg = OmegaConf.load(file)
     if merge_cli:
         cfg_cli = OmegaConf.from_cli()
