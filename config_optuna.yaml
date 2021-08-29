@@ -1,9 +1,0 @@
-optuna:
-    n_trials: 3
-    lr:
-        - 0.01
-        - 0.03
-
-optuna_study:
-    storage: sqlite:///db/optuna.db
-

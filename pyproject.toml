@@ -4,7 +4,7 @@ version = "0.9"
 [tool.pysen.lint]
 enable_black = true
 enable_flake8 = true
-enable_isort = false
+enable_isort = true
 enable_mypy = false
 [[tool.pysen.lint.mypy_targets]]
 paths = ["."]

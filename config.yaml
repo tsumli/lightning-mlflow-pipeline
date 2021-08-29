@@ -1,6 +1,17 @@
+seed: 42
+
+dataset:
+    name: MNIST
+    root: .
+    test_size: 0.2
+    random_state: 42
+
+dataloader:
+    batch_size: 4
+
 trainer:
     profiler: False
-    gpus: 1
+    gpus: 0
     fast_dev_run: False
     min_epochs: 1
     max_epochs: 1
@@ -10,14 +21,29 @@ logger:
     tracking_uri: "file:./ml-runs"
 
 optimizer:
-    lr: 0.001
-    weight_decay: 0.00001
+    args:
+      lr: 0.001
+      weight_decay: 0.00001
     
-on_scheduler: True
-scheduler:
-    T_max: 5
-    eta_min: 0.0001
+    scheduler:
+        enable:
+        T_max: 5
+        eta_min: 0.0001
 
 num_class: 10
 
-seed: 42
+
+optuna:
+    enable: True
+    n_trials: 3
+    parameters:
+        lr:
+            type: float
+            args:
+              low: 0.01
+              high: 0.03
+
+    create_study:
+        direction: minimize
+        study_name: optuna
+        storage: sqlite:///db/optuna.db
