@@ -19,7 +19,7 @@ class TrainModel(pl.LightningModule):
         return h, res
 
     def configure_optimizers(self):
-        optimizer = torch.optim.SGD(self.parameters(), **self.cfg.optimizer)
+        optimizer = torch.optim.SGD(self.parameters(), **self.cfg.optimizer.args)
         if self.cfg.optimizer.scheduler.enable:
             cfg_scheduler = self.cfg.optimizer.scheduler
             scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(

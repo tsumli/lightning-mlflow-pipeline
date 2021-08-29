@@ -6,6 +6,8 @@ dataset:
     test_size: 0.2
     random_state: 42
 
+dataloader:
+    batch_size: 4
 
 trainer:
     profiler: False
@@ -19,8 +21,9 @@ logger:
     tracking_uri: "file:./ml-runs"
 
 optimizer:
-    lr: 0.001
-    weight_decay: 0.00001
+    args:
+      lr: 0.001
+      weight_decay: 0.00001
     
     scheduler:
         enable:
