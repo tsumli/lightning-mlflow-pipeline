@@ -58,19 +58,19 @@ def fit(cfg: DictConfig):
         Subset(datasets["train"], range(20)),
         batch_size=cfg.dataloader.batch_size,
         shuffle=True,
-        num_workers=4
+        num_workers=4,
     )
     val_dataloader = DataLoader(
         Subset(datasets["val"], range(20)),
         batch_size=cfg.dataloader.batch_size,
         shuffle=False,
-        num_workers=4
+        num_workers=4,
     )
     test_dataloader = DataLoader(
         Subset(datasets["test"], range(20)),
         batch_size=cfg.dataloader.batch_size,
         shuffle=False,
-        num_workers=4
+        num_workers=4,
     )
     trainer.fit(
         model=model,

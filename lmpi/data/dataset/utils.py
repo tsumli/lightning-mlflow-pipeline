@@ -1,9 +1,10 @@
-from typing import Dict, Union, Optional
+from typing import Dict, Optional, Union
 
 import torch
-from torch.utils.data import Subset
 from sklearn.model_selection import train_test_split
+from torch.utils.data import Subset
 from torchvision import datasets as D
+
 from .. import dataset as implemented_dataset
 
 
@@ -37,13 +38,11 @@ def get_datasets(
         train=True,
         download=True,
         transform=transform,
-        target_transform=target_transform
+        target_transform=target_transform,
     )
 
     idx_train, idx_val = train_test_split(
-        list(range(len(dataset_train))),
-        test_size=test_size,
-        random_state=random_state
+        list(range(len(dataset_train))), test_size=test_size, random_state=random_state
     )
 
     dataset_val = dataset(
@@ -51,7 +50,7 @@ def get_datasets(
         train=True,
         download=False,
         transform=test_transform,
-        target_transform=test_target_transform
+        target_transform=test_target_transform,
     )
 
     dataset_train = Subset(dataset_train, idx_train)
@@ -62,7 +61,7 @@ def get_datasets(
         train=False,
         download=True,
         transform=test_transform,
-        target_transform=test_target_transform
+        target_transform=test_target_transform,
     )
 
     return {
