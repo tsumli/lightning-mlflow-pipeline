@@ -1,4 +1,4 @@
-from .transform import TrainTransform, TestTransform
+from .transform import TestTransform, TrainTransform
 
 
 def get_transform():
