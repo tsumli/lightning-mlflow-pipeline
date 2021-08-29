@@ -24,7 +24,7 @@ def fit(cfg):
     ----------
     cfg:
     config for fitting
-    
+
     Returns
     ----------
     test_loss: Any
@@ -50,7 +50,7 @@ def fit(cfg):
     )
     dl_train, dl_val, dl_test = MNIST_datasets()
     trainer.fit(net, dl_train, dl_val)
-    test_loss = trainer.test(net, dl_test)[0]['test_loss']
+    test_loss = trainer.test(net, dl_test)[0]["test_loss"]
     print(test_loss)
     return test_loss
 

@@ -20,11 +20,7 @@ def get_config_optuna(file: str = "config_optuna.yaml"):
 
 def mod_params(trial, cfg):
     lr = trial.suggest_float("lr", *cfg.optuna.lr)
-    return OmegaConf.create({
-        "optimizer": {
-            "lr": lr
-        }
-    })
+    return OmegaConf.create({"optimizer": {"lr": lr}})
 
 
 def objective(trial, cfg, cfg_optuna):
@@ -38,11 +34,15 @@ def main():
     cfg = get_config()
     cfg_optuna = get_config_optuna()
     study = optuna.create_study(
-        direction='maximize', 
-        storage=cfg_optuna.optuna_study.storage, 
-        study_name='optuna', 
-        load_if_exists=True)
-    study.optimize(lambda trial: objective(trial, cfg, cfg_optuna), n_trials=cfg_optuna.optuna.n_trials)
+        direction="maximize",
+        storage=cfg_optuna.optuna_study.storage,
+        study_name="optuna",
+        load_if_exists=True,
+    )
+    study.optimize(
+        lambda trial: objective(trial, cfg, cfg_optuna),
+        n_trials=cfg_optuna.optuna.n_trials,
+    )
     best_params = study.best_params
     print(f"best_params: {best_params}")
 
