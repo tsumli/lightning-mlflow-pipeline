@@ -6,6 +6,9 @@ enable_black = true
 enable_flake8 = true
 enable_isort = true
 enable_mypy = false
+line_length=88
+isort_known_first_party = ["lmpi"]
+
 [[tool.pysen.lint.mypy_targets]]
 paths = ["."]
 
