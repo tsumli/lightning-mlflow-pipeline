@@ -1,4 +1,4 @@
-from .transform import TestTransform, TrainTransform
+from lmpi.transform import TestTransform, TrainTransform
 
 
 def get_transform():
