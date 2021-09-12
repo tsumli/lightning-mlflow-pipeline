@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import optuna
 import pytorch_lightning as pl
@@ -10,12 +11,12 @@ from pytorch_lightning.loggers import MLFlowLogger
 
 from lmpi.train_model import TrainModel
 from lmpi.data.dataloader import make_dataloader
-from lmpi.utils import get_config, suggest_config
+from lmpi.utils import get_config, update_suggest_config
 
 print = ic
 
 
-def fit(config: DictConfig):
+def fit(config: DictConfig, trial: Optional[optuna.trial.Trial]):
     """
     Parameters
     ----------
@@ -29,6 +30,7 @@ def fit(config: DictConfig):
     """
     model = TrainModel(config)
     mlflow_logger = MLFlowLogger(
+        tags={"trial": trial.number} if trial is not None else None,
         **config.logger,
     )
     local_save_dir = os.path.join(
@@ -42,12 +44,13 @@ def fit(config: DictConfig):
         os.path.join(local_save_dir, "config.yaml")
     )
     checkpoint_callback = ModelCheckpoint(
-        os.path.join(local_save_dir, "{epoch:02d}-{val_loss:.2f}"), monitor="val_loss"
+        os.path.join(local_save_dir, "{epoch:02d}-{val_loss:.2f}"),
+        monitor="val_loss"
     )
     trainer = pl.Trainer(
         **config["trainer"],
         logger=mlflow_logger,
-        checkpoint_callback=checkpoint_callback,
+        callbacks=[checkpoint_callback],
     )
 
     dataloader = make_dataloader(config)
@@ -67,8 +70,8 @@ def fit(config: DictConfig):
 
 def objective(config: DictConfig):
     def objective_fn(trial: optuna.trial.Trial):
-        config_fit = suggest_config(trial, config)
-        test_loss = fit(config_fit)
+        config_fit = update_suggest_config(trial, config)
+        test_loss = fit(config_fit, trial)
         return test_loss
 
     return objective_fn

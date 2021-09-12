@@ -36,11 +36,13 @@ optuna:
     enable: True
     n_trials: 3
     parameters:
-        lr:
-            type: float
-            args:
-              low: 0.01
-              high: 0.03
+        optimizer:
+          args:
+            lr:
+              type: float
+              args:
+                low: 0.01
+                high: 0.03
 
     create_study:
         direction: minimize
