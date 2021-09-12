@@ -9,8 +9,8 @@ from pytorch_lightning import seed_everything
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import MLFlowLogger
 
-from lmpi.train_model import TrainModel
 from lmpi.data.dataloader import make_dataloader
+from lmpi.train_model import TrainModel
 from lmpi.utils import get_config, update_suggest_config
 
 print = ic
@@ -39,13 +39,9 @@ def fit(config: DictConfig, trial: Optional[optuna.trial.Trial]):
         mlflow_logger.run_id,
         "artifacts",
     )
-    OmegaConf.save(
-        config,
-        os.path.join(local_save_dir, "config.yaml")
-    )
+    OmegaConf.save(config, os.path.join(local_save_dir, "config.yaml"))
     checkpoint_callback = ModelCheckpoint(
-        os.path.join(local_save_dir, "{epoch:02d}-{val_loss:.2f}"),
-        monitor="val_loss"
+        os.path.join(local_save_dir, "{epoch:02d}-{val_loss:.2f}"), monitor="val_loss"
     )
     trainer = pl.Trainer(
         **config["trainer"],
@@ -60,10 +56,7 @@ def fit(config: DictConfig, trial: Optional[optuna.trial.Trial]):
         train_dataloader=dataloader["train"],
         val_dataloaders=dataloader["val"],
     )
-    test_loss = trainer.test(
-        model=model,
-        test_dataloaders=dataloader["test"]
-    )
+    test_loss = trainer.test(model=model, test_dataloaders=dataloader["test"])
     test_loss = test_loss[0]["test_loss"]
     return test_loss
 

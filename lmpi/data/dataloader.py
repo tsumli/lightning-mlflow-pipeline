@@ -1,5 +1,5 @@
-from torch.utils.data import DataLoader, Subset
 from omegaconf import DictConfig
+from torch.utils.data import DataLoader, Subset
 
 from lmpi.data.dataset.utils import get_datasets
 from lmpi.transform.utils import get_transform
